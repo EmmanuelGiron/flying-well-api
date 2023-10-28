@@ -1,0 +1,172 @@
+Oferta_Vuelos 
+	ID_oferta (PK)
+	ID_aerolinea (FK)
+	ID_Tipo_de_vuelo (FK)
+	Origen_v
+	Destino_v
+	Fecha
+	Hora_salida	
+	Asientos_disponibles
+	objetos_personales
+	Fecha_inicio
+	Fecha fin
+	Precio
+	ID_estado_vuelo (FK)
+
+Estado_vuelo
+	ID_estado_vuelo (PK)
+	Estado
+
+Tipo de vuelo
+	ID_Tipo_de_vuelo (PK)
+	Tipo (Redondo, sencillo)
+
+Areolinea
+	ID_aerolinea (PK)
+	Nombre_aerolinea
+	Nombre_representante
+	Correo_representante
+
+Usuarios
+	ID_Usuario (Automatico) (PK)
+	Nombres
+	Apellidos
+	Contrasenia
+	correo
+	Tipo_usuario
+	Token_Verificacion (Revisar)
+
+Clientes
+	DUI O Pasapore  (PK)
+	ID_usuario	(FK)	
+	Nombres
+	Apellidos
+	Correo
+	Telefono
+	Direccion
+	token_verificacion
+
+
+Empleados(Flying well)
+	ID_empleado (PK)
+	ID_Empresa  (FK)	
+	ID_usuario  (FK)
+	Tipo_Empleado 
+
+	
+======================================
+Script 
+-- Crear la base de datos "Flyingwell"
+CREATE DATABASE IF NOT EXISTS Flyingwell;
+
+-- Usar la base de datos "Flyingwell"
+USE Flyingwell;
+
+-- Crear la tabla Estado_vuelo
+CREATE TABLE Estado_vuelo (
+    ID_estado_vuelo INT AUTO_INCREMENT PRIMARY KEY,
+    Estado VARCHAR(50) NOT NULL
+) ENGINE=InnoDB;
+
+-- Crear la tabla Tipo_de_vuelo
+CREATE TABLE Tipo_de_vuelo (
+    ID_Tipo_de_vuelo INT AUTO_INCREMENT PRIMARY KEY,
+    Tipo VARCHAR(20) NOT NULL
+) ENGINE=InnoDB;
+
+-- Crear la tabla Aerolinea
+CREATE TABLE Aerolinea (
+    ID_aerolinea INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre_aerolinea VARCHAR(100) NOT NULL,
+    Nombre_representante VARCHAR(100) NOT NULL,
+    Correo_representante VARCHAR(100) NOT NULL
+) ENGINE=InnoDB;
+
+-- Crear la tabla Usuarios
+CREATE TABLE Usuarios (
+    ID_Usuario INT AUTO_INCREMENT PRIMARY KEY,
+    Nombres VARCHAR(100) NOT NULL,
+    Apellidos VARCHAR(100) NOT NULL,
+    Contrasenia VARCHAR(100) NOT NULL,
+    correo VARCHAR(100) NOT NULL,
+    Tipo_usuario VARCHAR(50) NOT NULL,
+    Token_Verificacion VARCHAR(100) -- Asegúrate de definir la longitud adecuada
+) ENGINE=InnoDB;
+
+-- Crear la tabla Clientes
+CREATE TABLE Clientes (
+    DUI_O_Pasaporte VARCHAR(20) PRIMARY KEY,
+    ID_usuario INT,
+    Nombres VARCHAR(100) NOT NULL,
+    Apellidos VARCHAR(100) NOT NULL,
+    Correo VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(20),
+    Direccion VARCHAR(255),
+    Token_Verificacion VARCHAR(100), -- Asegúrate de definir la longitud adecuada
+    FOREIGN KEY (ID_usuario) REFERENCES Usuarios(ID_Usuario)
+) ENGINE=InnoDB;
+
+-- Crear la tabla Empleados
+CREATE TABLE Empleados (
+    ID_empleado INT AUTO_INCREMENT PRIMARY KEY,
+    ID_Empresa INT,
+    ID_usuario INT,
+    Tipo_Empleado VARCHAR(50) NOT NULL,
+    FOREIGN KEY (ID_Empresa) REFERENCES Aerolinea(ID_aerolinea),
+    FOREIGN KEY (ID_usuario) REFERENCES Usuarios(ID_Usuario)
+) ENGINE=InnoDB;
+
+-- Crear la tabla Oferta_Vuelos
+CREATE TABLE Oferta_Vuelos (
+    ID_oferta INT AUTO_INCREMENT PRIMARY KEY,
+    ID_aerolinea INT,
+    ID_Tipo_de_vuelo INT,
+    Origen_v VARCHAR(100) NOT NULL,
+    Destino_v VARCHAR(100) NOT NULL,
+    Fecha DATE,
+    Hora_salida TIME,
+    Asientos_disponibles INT,
+    objetos_personales VARCHAR(255),
+    Fecha_inicio DATE,
+    Fecha_fin DATE,
+    Precio DECIMAL(10, 2), -- Ajusta la precisión y escala según tus necesidades
+    ID_estado_vuelo INT,
+    FOREIGN KEY (ID_aerolinea) REFERENCES Aerolinea(ID_aerolinea),
+    FOREIGN KEY (ID_Tipo_de_vuelo) REFERENCES Tipo_de_vuelo(ID_Tipo_de_vuelo),
+    FOREIGN KEY (ID_estado_vuelo) REFERENCES Estado_vuelo(ID_estado_vuelo)
+) ENGINE=InnoDB;
+
+	
+--Insersecion de registros
+--Tabla areolinea
+INSERT INTO `aerolinea` (`ID_aerolinea`, `Nombre_aerolinea`, `Nombre_representante`, `Correo_representante`) VALUES ('1', 'Avianca', 'Carlos Molina', 'carlos.molina@avianca.com'), ('2', 'Volaris', 'Ernesto Lopez', 'ernesto.lopez@volaris.com');
+
+--Tabla usuario
+INSERT INTO `usuarios` (`ID_Usuario`, `Nombres`, `Apellidos`, `Contrasenia`, `correo`, `Tipo_usuario`, `Token_Verificacion`) VALUES ('3', 'Ana', 'Ramirez', '123456', 'ana.ramirez@correo.com', 'cliente', '1234');
+INSERT INTO `usuarios` (`ID_Usuario`, `Nombres`, `Apellidos`, `Contrasenia`, `correo`, `Tipo_usuario`, `Token_Verificacion`) VALUES ('3', 'Lourdes', 'Garcia', '123456', 'lourdes.garcia@correo.com', 'cliente', '1234');
+INSERT INTO `usuarios` (`ID_Usuario`, `Nombres`, `Apellidos`, `Contrasenia`, `correo`, `Tipo_usuario`, `Token_Verificacion`) VALUES ('3', 'Mario', 'Herrera', '123456', 'mario.herrera@correo.com', 'empleado', '1234');
+
+--Tabla cliente
+INSERT INTO `clientes` (`DUI_O_Pasaporte`, `ID_usuario`, `Nombres`, `Apellidos`, `Correo`, `Telefono`, `Direccion`, `Token_Verificacion`) VALUES ('12345678-1', '1', 'Ana', 'Ramirez', 'ana.ramirez@correo.com', '77776666', 'Soyapango', '1234'), ('12345678-2', '2', 'Lourdes', 'Garcia', 'lourdes.garcia@correo.com', '66667777', 'San Salvador', '1234');
+INSERT INTO `clientes` (`DUI_O_Pasaporte`, `ID_usuario`, `Nombres`, `Apellidos`, `Correo`, `Telefono`, `Direccion`, `Token_Verificacion`) VALUES ('12345678-3', '3', 'Mario', 'Herrera', 'mario.herrera@correo.com', '66776677', 'San Miguel', '1234');
+
+--Tabla Empleado
+INSERT INTO `empleados` (`ID_empleado`, `ID_Empresa`, `ID_usuario`, `Tipo_Empleado`) VALUES ('1', '1', '3', 'Administrador');
+
+--Tabla tipo de vuelo
+INSERT INTO `tipo_de_vuelo` (`ID_Tipo_de_vuelo`, `Tipo`) VALUES ('1', 'Normal'), ('2', 'Deluxe');
+
+--Tabla estado del vuelo
+INSERT INTO `estado_vuelo` (`ID_estado_vuelo`, `Estado`) VALUES ('1', 'Activo'), ('2', 'Vencido');
+
+--Tabla oferta vuelo
+INSERT INTO `oferta_vuelos` (`ID_oferta`, `ID_aerolinea`, `ID_Tipo_de_vuelo`, `Origen_v`, `Destino_v`, `Fecha`, `Hora_salida`, `Asientos_disponibles`, `objetos_personales`, `Fecha_inicio`, `Fecha_fin`, `Precio`, `ID_estado_vuelo`) VALUES ('1', '1', '1', 'El Salvador', 'Mexico', '2023-10-03', '16:00:32', '12', 'Una maleta ', '2023-10-04', '2023-10-18', '123', '1'), ('2', '2', '2', 'El Salvador', 'Estados Unidos', '2023-10-04', '16:00:32', '3', 'Dos maletas', '2023-10-11', '2023-10-27', '123', '2');
+
+
+
+
+
+
+
+ 
+
