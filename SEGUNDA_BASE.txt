@@ -1,0 +1,130 @@
+--Script 
+-- Crear la base de datos "Flyingwell"
+CREATE DATABASE IF NOT EXISTS Flyingwell;
+
+-- Usar la base de datos "Flyingwell"
+USE Flyingwell;
+
+
+--
+-- Estructura de tabla para la tabla `aerolinea`
+--
+
+
+CREATE TABLE `aerolinea` (
+  `ID_aerolinea` int NOT NULL AUTO_INCREMENT,
+  `Nombre_aerolinea` varchar(100) NOT NULL,
+  `Nombre_representante` varchar(100) NOT NULL,
+  `Correo_representante` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID_aerolinea`)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `boleto`
+--
+
+CREATE TABLE `boleto` (
+  `ID_oferta` int NOT NULL,
+  `ID_Usuario` int NOT NULL,
+  `ID_Boleto` int NOT NULL,
+  KEY `ID_oferta` (`ID_oferta`),
+  KEY `ID_Usuario` (`ID_Usuario`)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `estado_vuelo`
+--
+
+CREATE TABLE `estado_vuelo` (
+  `ID_estado_vuelo` int NOT NULL AUTO_INCREMENT,
+  `Estado` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID_estado_vuelo`)
+) ENGINE=InnoDB ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `oferta_vuelos`
+--
+
+CREATE TABLE `oferta_vuelos` (
+  `ID_oferta` int NOT NULL AUTO_INCREMENT,
+  `ID_aerolinea` int DEFAULT NULL,
+  `ID_Tipo_de_vuelo` int DEFAULT NULL,
+  `Origen_v` varchar(100) NOT NULL,
+  `Destino_v` varchar(100) NOT NULL,
+  `Fecha` date DEFAULT NULL,
+  `Hora_salida` time DEFAULT NULL,
+  `Asientos_disponibles` int DEFAULT NULL,
+  `objetos_personales` varchar(255) DEFAULT NULL,
+  `Fecha_inicio` date DEFAULT NULL,
+  `Fecha_fin` date DEFAULT NULL,
+  `Precio` decimal(10,2) DEFAULT NULL,
+  `ID_estado_vuelo` int DEFAULT NULL,
+  PRIMARY KEY (`ID_oferta`),
+  KEY `ID_aerolinea` (`ID_aerolinea`),
+  KEY `ID_Tipo_de_vuelo` (`ID_Tipo_de_vuelo`),
+  KEY `ID_estado_vuelo` (`ID_estado_vuelo`)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_de_vuelo`
+--
+
+CREATE TABLE `tipo_de_vuelo` (
+  `ID_Tipo_de_vuelo` int NOT NULL AUTO_INCREMENT,
+  `Tipo` varchar(20) NOT NULL,
+  PRIMARY KEY (`ID_Tipo_de_vuelo`)
+) ENGINE=InnoDB;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `ID_Usuario` int NOT NULL AUTO_INCREMENT,
+  `Nombres` varchar(100) NOT NULL,
+  `Apellidos` varchar(100) NOT NULL,
+  `dui_passport` varchar(35) NOT NULL,
+  `Contrasenia` varchar(100) NOT NULL,
+  `correo` varchar(100) NOT NULL,
+  `Tipo_usuario` varchar(50) NOT NULL,
+  `Token_Verificacion` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`ID_Usuario`)
+) ENGINE=InnoDB;
+
+
+ALTER TABLE `boleto`
+  ADD CONSTRAINT `boleto_ibfk_1` FOREIGN KEY (`ID_oferta`) REFERENCES `oferta_vuelos` (`ID_oferta`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `boleto_ibfk_4` FOREIGN KEY (`ID_Usuario`) REFERENCES `usuarios` (`ID_Usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+ALTER TABLE `oferta_vuelos`
+  ADD CONSTRAINT `oferta_vuelos_ibfk_1` FOREIGN KEY (`ID_aerolinea`) REFERENCES `aerolinea` (`ID_aerolinea`),
+  ADD CONSTRAINT `oferta_vuelos_ibfk_2` FOREIGN KEY (`ID_Tipo_de_vuelo`) REFERENCES `tipo_de_vuelo` (`ID_Tipo_de_vuelo`),
+  ADD CONSTRAINT `oferta_vuelos_ibfk_3` FOREIGN KEY (`ID_estado_vuelo`) REFERENCES `estado_vuelo` (`ID_estado_vuelo`);
+
+--Usuarios
+INSERT INTO `usuarios` (`ID_Usuario`, `Nombres`, `Apellidos`, `dui_passport`, `Contrasenia`, `correo`, `Tipo_usuario`, `Token_Verificacion`) VALUES ('1', 'Ana', 'Ramirez', '12345678-9', '123456', 'ana.ramirez@correo.com', 'cliente', '1234'), ('2', 'Lourdes', 'Garcia', '12345678-1', '123456789', 'lourdes.garcia@correo.com', 'cliente', '1234');
+--Aereolinea
+INSERT INTO `aerolinea` (`ID_aerolinea`, `Nombre_aerolinea`, `Nombre_representante`, `Correo_representante`) VALUES ('1', 'Avianca', 'Carlos Molina', 'carlos.molina@avianca.com'), ('2', 'Volaris', 'Ernesto Lopez', 'ernesto.lopez@volaris.com');
+--Tabla tipo de vuelo
+INSERT INTO `tipo_de_vuelo` (`ID_Tipo_de_vuelo`, `Tipo`) VALUES ('1', 'Normal'), ('2', 'Deluxe');
+
+--Tabla estado del vuelo
+INSERT INTO `estado_vuelo` (`ID_estado_vuelo`, `Estado`) VALUES ('1', 'Activo'), ('2', 'Vencido');
+
+--Tabla oferta vuelo
+INSERT INTO `oferta_vuelos` (`ID_oferta`, `ID_aerolinea`, `ID_Tipo_de_vuelo`, `Origen_v`, `Destino_v`, `Fecha`, `Hora_salida`, `Asientos_disponibles`, `objetos_personales`, `Fecha_inicio`, `Fecha_fin`, `Precio`, `ID_estado_vuelo`) VALUES ('1', '1', '1', 'El Salvador', 'Mexico', '2023-10-03', '16:00:32', '12', 'Una maleta ', '2023-10-04', '2023-10-18', '123', '1'), ('2', '2', '2', 'El Salvador', 'Estados Unidos', '2023-10-04', '16:00:32', '3', 'Dos maletas', '2023-10-11', '2023-10-27', '123', '2');
+
+--boleto
+INSERT INTO `boleto` (`ID_oferta`, `ID_Usuario`, `ID_Boleto`) VALUES ('2', '1', '1'), ('2', '2', '2');
+
