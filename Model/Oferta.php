@@ -40,7 +40,6 @@ class Oferta extends Model
         }
         else
         {
-            //No hay activos en la base de datos o la consulta retornó null
             return null;
         }
     }
@@ -51,21 +50,21 @@ class Oferta extends Model
         $this->tipo_vuelo_id = $idtipovuelo;
         $this->estado_vuelo_id = $idestadovuelo;
         $query = "INSERT INTO oferta_vuelos
-        VALUES (:id, :origen_v, :destino_v, :fecha, :hora_salida, :asientos_disponibles, :objetos_personales, :fecha_inicio, :fecha_fin, :precio, :aereolinea_id, :tipo_vuelo_id, :estado_vuelo_id)";
+        VALUES (:ID_oferta, :ID_aerolinea, :ID_Tipo_vuelo, :Origen_v, :Destino_v, :Fecha, :Hora_salida, :Asientos_disponibles, :Objetos_personales, :Fecha_inicio, :Fecha_fin, :Precio,:ID_estado_vuelo)";
         $params= array(
-            "id" => null,
-            "origen_v" => $this->origen_v,
-            "destino_v" => $this->destino_v,
-            "fecha" => $this->fecha,
-            "hora_salida" => $this->hora_salida,
-            "asientos_disponibles" => $this->asientos_disponibles,
-            "objetos" => $this->objetos_personales,
-            "fecha_inicio" => $this->fecha_inicio,
-            "fecha_fin" => $this->fecha_fin,
-            "precio" => $this->precio,
-            "aereolinea_id" => $this->aereolinea_id,
-            "tipo_vuelo_id" => $this->tipo_vuelo_id,
-            "estado_vuelo_id" => $this->estado_vuelo_id
+            "ID_oferta" => null,
+            "ID_aerolinea" => $this->aereolinea_id,
+            "ID_Tipo_vuelo" => $this->tipo_vuelo_id,
+            "Origen_v" => $this->origen_v,
+            "Destino_v" => $this->destino_v,
+            "Fecha" => $this->fecha,
+            "Hora_salida" => $this->hora_salida,
+            "Asientos_disponibles" => $this->asientos_disponibles,
+            "Objetos_personales" => $this->objetos_personales,
+            "Fecha_inicio" => $this->fecha_inicio,
+            "Fecha_fin" => $this->fecha_fin,
+            "Precio" => $this->precio,
+            "ID_estado_vuelo" => $this->estado_vuelo_id
         );
         return $this->setQuery($query, $params);
     }

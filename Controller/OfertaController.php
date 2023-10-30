@@ -28,7 +28,7 @@ class OfertaController extends Controller
             $this->oferta->fecha_inicio=$input['fecha_inicio'];
             $this->oferta->fecha_fin=$input['fecha_fin'];
             $this->oferta->precio=$input['precio'];
-            $this->oferta->addOferta($input['areolinea_id'], $input['tipo_vuelo_id'],$input['estado_vuelo_id']);
+            $this->oferta->addOferta($input['aerolinea_id'], $input['tipo_vuelo_id'],$input['estado_vuelo_id']);
             header("HTTP/1.1 200");
             exit();
         }    
