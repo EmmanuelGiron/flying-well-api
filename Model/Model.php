@@ -5,7 +5,7 @@ abstract class Model
     private $hostname="localhost";
     private $user="root";
     private $pass="";
-    private $db="flyingwell2";
+    private $db="flyingwell";
     protected $dbh;
 
     /*Métodos*/
