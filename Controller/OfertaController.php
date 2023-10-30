@@ -10,9 +10,9 @@ class OfertaController extends Controller
         $this->oferta=new Oferta();
     }
     
-    public function index(){
+    public function index($id){
         if ($_SERVER['REQUEST_METHOD'] == 'GET'){
-            $ofertas=$this->oferta->getOferta();
+            $ofertas=$this->oferta->getOferta($id);
             header("HTTP/1.1 200");
             echo $ofertas;
             exit();

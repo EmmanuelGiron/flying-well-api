@@ -19,18 +19,25 @@ class Oferta extends Model
     public $estado_vuelo_id; //int
 
     /*Métodos*/
-    public function getOferta($idasset = 0)
+    public function getOferta($id = 0)
     {
-        if ($idasset != 0) 
+        if ($id != 0) 
         {   
-            $this->id_oferta = intval($idasset);
-            $query="SELECT * FROM oferta_vuelos WHERE ID_oferta = :id";
+            $this->id_oferta = intval($id);
+            $query="SELECT O.ID_oferta,O.Origen_v,O.Destino_v,O.Fecha,O.Hora_salida, O.Asientos_disponibles,O.objetos_personales,O.Fecha_inicio,O.Fecha_fin,O.Precio,A.Nombre_aerolinea,T.Tipo,E.Estado FROM oferta_vuelos O INNER JOIN aerolinea A ON A.ID_aerolinea = O.ID_aerolinea 
+            INNER JOIN tipo_de_vuelo T ON T.ID_Tipo_de_vuelo = O.ID_Tipo_de_vuelo INNER JOIN estado_vuelo E ON E.ID_estado_vuelo = O.ID_estado_vuelo
+            WHERE O.ID_oferta = :id";
             $params = array("id" => $this->id_oferta);
             $rows = $this->getQuery($query, $params);
         }
         else 
         {
-            $query="SELECT * FROM oferta_vuelos";
+            $query="SELECT O.ID_oferta,O.Origen_v,O.Destino_v,O.Fecha,O.Hora_salida, 
+            O.Asientos_disponibles,O.objetos_personales,O.Fecha_inicio,O.Fecha_fin,O.Precio,
+            A.Nombre_aerolinea,T.Tipo,E.Estado FROM oferta_vuelos O 
+            INNER JOIN aerolinea A ON A.ID_aerolinea = O.ID_aerolinea 
+            INNER JOIN tipo_de_vuelo T ON T.ID_Tipo_de_vuelo = O.ID_Tipo_de_vuelo 
+            INNER JOIN estado_vuelo E ON E.ID_estado_vuelo = O.ID_estado_vuelo";
             $rows = $this->getQuery($query);
             
         }

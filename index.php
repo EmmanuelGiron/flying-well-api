@@ -14,7 +14,7 @@ $controller=empty($url[2])?"Oferta":$url[2];
 $controller.="Controller";
 $fileController="Controller/$controller.php";
 $method=empty($url[3])?"index":$url[3];
-$param=empty($url[4])?"":$url[4];
+$param=empty($url[4])?"0":$url[4];
 $controlador=new $controller();
 $controlador->$method($param);
 ?>
