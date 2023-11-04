@@ -5,6 +5,8 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Allow: GET, POST, OPTIONS, PUT, DELETE");
 //require_once "";
 include_once 'Controller/OfertaController.php';
+include_once 'Controller/UsuarioController.php';
+include_once 'Controller/BoletoController.php';
 
 $url=$_SERVER['REQUEST_URI'];
 //define('BASEPATH',true);
